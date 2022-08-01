@@ -1,0 +1,25 @@
+version: '3.1'
+services:
+  postgresrms:
+    image: postgres
+    container_name: postgresrms
+    hostname: postgresrms
+    ports:
+      - "35000:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=employeedb
+  api:
+    build:
+      dockerfile: dockerfile
+      context: ./
+    depends_on:
+      - postgresrms
+    environment:
+      DATABASE_URL: postgresql://postgres:5432/employeedb
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+    ports:
+      - "8080:8080"
+
