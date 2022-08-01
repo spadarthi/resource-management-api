@@ -22,7 +22,7 @@ or `4XX Unprocessable Entity` if the event was not accepted by the state machine
   }
 ```
 - event : [BEGIN-CHECK, APPROVE, UNAPPROVE, ACTIVATE]
-- state : ADDED, IN_CHECK, APPROVED, ACTIVE
+- state : [ADDED, IN_CHECK, APPROVED, ACTIVE]
 
 | method | api                   | url                                               | input        |
 |--------|-----------------------|---------------------------------------------------|--------------|

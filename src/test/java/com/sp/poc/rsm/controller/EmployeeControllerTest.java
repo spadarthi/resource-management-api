@@ -88,7 +88,7 @@ public class EmployeeControllerTest {
         when(employeeService.updateEmployeeState(any(Long.class), any(Event.class))).thenReturn(employeeUpdated);
         mockMvc.perform(put("/api/v1/employees/{id}/{event}", id, Event.BEGIN_CHECK).contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString("")))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.state").value(State.IN_CHECK.name()))
                 .andDo(print());
     }
