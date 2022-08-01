@@ -35,11 +35,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee addEmployee(Employee employee) {
         Optional.of(employee).orElseThrow(() -> new InvalidInputException("Employee details is required"));
 
-        if (employee.getState() != null || !employee.getState().equals(State.ADDED)) {
-            throw new InvalidInputException("State should be empty or only 'ADDED' is allowed for adding employee");
-        } else {
+        if (employee.getState() == null || employee.getState().equals(State.ADDED)) {
             employee.setState(State.ADDED);
             return empRepository.save(employee);
+        } else {
+            throw new InvalidInputException("State should be empty or only 'ADDED' is allowed for adding employee");
         }
     }
 
