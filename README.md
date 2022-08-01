@@ -3,7 +3,7 @@ Resource management api with statemachine
 
 ## The State Machine
 The state machine is a simulation of a resource fulfillment process
-
+![UML state machine](https://github.com/spadarthi/resource-management-api/blob/main/src/main/resources/Employee_statemachine.png)
 
 ## The REST-ful API
 The REST API exposes links for receiving events to trigger state transitions for
