@@ -87,6 +87,6 @@ public class EmployeeController {
                                                         @Parameter @Schema(type = "string", allowableValues = {"BEGIN_CHECK", "APPROVE", "UN_APPROVE", "ACTIVATE"})
                                                         @Valid @PathVariable(value = "event") Event event) {
         Employee employee = employeeService.updateEmployeeState(empId, event);
-        return ResponseEntity.ok(employee);
+        return ResponseEntity.accepted().body(employee);
     }
 }
