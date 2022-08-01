@@ -52,4 +52,14 @@ or `4XX Unprocessable Entity` if the event was not accepted by the state machine
 }
 ```
 
-##
+## BUILD & RUN
+
+- start with clean and fetch all dependencies into local repo
+* mvn clean install
+
+- Local deployment (ex: IDE or command-line)
+* mvn spring-boot:run
+
+- With Docker
+* docker-compose up (create docker images for api and database)
+* docker ps (list available dockers)
