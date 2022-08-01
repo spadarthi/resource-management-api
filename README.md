@@ -64,3 +64,14 @@ or `4XX Unprocessable Entity` if the event was not accepted by the state machine
 3) With Docker
    - docker-compose up (create docker images for api and database)
    - docker ps (list available dockers)
+
+#### Pre requisites 
+
+1) Open JDK 11 
+2) Spring boot with statemachine, data, open-api, web
+3) H2 for testing
+4) Postgre-Sql 
+5) Junit
+6) lombok
+7) Docker 
+
