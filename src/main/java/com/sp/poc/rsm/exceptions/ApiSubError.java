@@ -3,7 +3,6 @@ package com.sp.poc.rsm.exceptions;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.stereotype.Component;
 
 abstract class ApiSubError {
 

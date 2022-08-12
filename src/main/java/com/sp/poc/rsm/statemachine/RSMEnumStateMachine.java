@@ -1,6 +1,5 @@
 package com.sp.poc.rsm.statemachine;
 
-import com.sp.poc.rsm.controller.EmployeeController;
 import com.sp.poc.rsm.enums.Event;
 import com.sp.poc.rsm.enums.State;
 import lombok.extern.slf4j.Slf4j;

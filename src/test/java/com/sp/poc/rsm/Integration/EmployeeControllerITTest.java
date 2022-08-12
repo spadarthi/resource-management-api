@@ -20,53 +20,45 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = ResourceManagementApiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class EmployeeControllerITTest {
+class EmployeeControllerITTest {
     @LocalServerPort
     private int port;
     TestRestTemplate restTemplate = new TestRestTemplate();
     HttpHeaders headers = new HttpHeaders();
 
     @Test
-    public void testRetrieveEmployeeById() {
+    void testRetrieveEmployeeById() {
 
         HttpEntity<Employee> entity = new HttpEntity<>(null, headers);
 
-        ResponseEntity<Employee> response = restTemplate.exchange(
-                createURLWithPort("/api/v1/employees/{id}"),
-                HttpMethod.GET, entity, Employee.class, 1L);
+        ResponseEntity<Employee> response = restTemplate.exchange(createURLWithPort("/api/v1/employees/{id}"), HttpMethod.GET, entity, Employee.class, 1L);
 
         Employee expected = new Employee(1L, "Michael Jackson", "APAC", State.ADDED, 29);
         assertEquals("Should be equal", expected.getEmpName(), response.getBody().getEmpName());
     }
 
     @Test
-    public void testUpdateEmployee() {
+    void testUpdateEmployee() {
         HttpEntity<Employee> entity = new HttpEntity<>(null, headers);
 
-        ResponseEntity<Employee> response = restTemplate.exchange(
-                createURLWithPort("/api/v1/employees/{id}"),
-                HttpMethod.GET, entity, Employee.class, 1L);
+        ResponseEntity<Employee> response = restTemplate.exchange(createURLWithPort("/api/v1/employees/{id}"), HttpMethod.GET, entity, Employee.class, 1L);
         Employee employee = response.getBody();
         employee.setAge(36);
         employee.setContractInfo("EUROPE");
 
         HttpEntity<Employee> entity2 = new HttpEntity<>(employee, headers);
 
-        ResponseEntity<Employee> response2 = restTemplate.exchange(
-                createURLWithPort("/api/v1/employees"),
-                HttpMethod.PUT, entity2, Employee.class);
+        ResponseEntity<Employee> response2 = restTemplate.exchange(createURLWithPort("/api/v1/employees"), HttpMethod.PUT, entity2, Employee.class);
 
         Employee expected = new Employee(1L, "Michael Jackson", "EUROPE", State.ADDED, 36);
         assertEquals("Should be equal", expected.getContractInfo(), response2.getBody().getContractInfo());
     }
 
     @Test
-    public void testUpdateEmployeeShouldFail() {
+    void testUpdateEmployeeShouldFail() {
         HttpEntity<Employee> entity = new HttpEntity<>(null, headers);
 
-        ResponseEntity<Employee> response = restTemplate.exchange(
-                createURLWithPort("/api/v1/employees/{id}"),
-                HttpMethod.GET, entity, Employee.class, 1L);
+        ResponseEntity<Employee> response = restTemplate.exchange(createURLWithPort("/api/v1/employees/{id}"), HttpMethod.GET, entity, Employee.class, 1L);
         Employee employee = response.getBody();
         employee.setAge(36);
         employee.setContractInfo("EUROPE");
@@ -74,9 +66,7 @@ public class EmployeeControllerITTest {
         //Here we can observe that state is not changed after update employee from this endpoint.
 
         HttpEntity<Employee> entity2 = new HttpEntity<>(employee, headers);
-        ResponseEntity<Employee> response2 = restTemplate.exchange(
-                createURLWithPort("/api/v1/employees"),
-                HttpMethod.PUT, entity2, Employee.class);
+        ResponseEntity<Employee> response2 = restTemplate.exchange(createURLWithPort("/api/v1/employees"), HttpMethod.PUT, entity2, Employee.class);
 
         Employee expected = new Employee(1L, "Michael Jackson", "EUROPE", State.ADDED, 36);
         assertEquals("Should be equal", expected.getContractInfo(), response2.getBody().getContractInfo());
@@ -84,36 +74,28 @@ public class EmployeeControllerITTest {
     }
 
     @Test
-    public void testUpdateEmployeeStateEventFailCase() {
+    void testUpdateEmployeeStateEventFailCase() {
         // Trying to send event ACTIVATE when State is ADDED
 
         HttpEntity<Employee> entity = new HttpEntity<>(null, headers);
-        ResponseEntity<Employee> response = restTemplate.exchange(
-                createURLWithPort("/api/v1/employees"),
-                HttpMethod.GET, entity, Employee.class);
+        ResponseEntity<Employee> response = restTemplate.exchange(createURLWithPort("/api/v1/employees"), HttpMethod.GET, entity, Employee.class);
         Employee employee = response.getBody();
         HttpEntity<Employee> entity2 = new HttpEntity<>(employee, headers);
-        ResponseEntity<Employee> response2 = restTemplate.exchange(
-                createURLWithPort("/api/v1/employees/{id}/{event}"),
-                HttpMethod.PUT, entity2, Employee.class, 1L, Event.ACTIVATE);
+        ResponseEntity<Employee> response2 = restTemplate.exchange(createURLWithPort("/api/v1/employees/{id}/{event}"), HttpMethod.PUT, entity2, Employee.class, 1L, Event.ACTIVATE);
 
         Employee expected = new Employee(1L, "Michael Jackson", "APAC", State.ACTIVE, 36);
         assertNotEquals("Should not equal", expected.getState(), response2.getBody().getState());
     }
 
     @Test
-    public void testUpdateEmployeeStateEventSuccessCase() {
+    void testUpdateEmployeeStateEventSuccessCase() {
         // Trying to send event BEGIN_CHECK when State is ADDED
 
         HttpEntity<Employee> entity = new HttpEntity<>(null, headers);
-        ResponseEntity<Employee> response = restTemplate.exchange(
-                createURLWithPort("/api/v1/employees"),
-                HttpMethod.GET, entity, Employee.class);
+        ResponseEntity<Employee> response = restTemplate.exchange(createURLWithPort("/api/v1/employees"), HttpMethod.GET, entity, Employee.class);
         Employee employee = response.getBody();
         HttpEntity<Employee> entity2 = new HttpEntity<>(employee, headers);
-        ResponseEntity<Employee> response2 = restTemplate.exchange(
-                createURLWithPort("/api/v1/employees/{id}/{event}"),
-                HttpMethod.PUT, entity2, Employee.class, 1L, Event.BEGIN_CHECK);
+        ResponseEntity<Employee> response2 = restTemplate.exchange(createURLWithPort("/api/v1/employees/{id}/{event}"), HttpMethod.PUT, entity2, Employee.class, 1L, Event.BEGIN_CHECK);
 
         Employee expected = new Employee(1L, "Michael Jackson", "APAC", State.IN_CHECK, 36);
         assertEquals("Should be equal", expected.getState(), response2.getBody().getState());

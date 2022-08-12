@@ -1,15 +1,12 @@
 package com.sp.poc.rsm.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sp.poc.rsm.dtos.EmployeeDTO;
 import com.sp.poc.rsm.entity.Employee;
 import com.sp.poc.rsm.enums.Event;
 import com.sp.poc.rsm.enums.State;
 import com.sp.poc.rsm.service.EmployeeService;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,19 +23,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {EmployeeController.class})
-public class EmployeeControllerTest {
+class EmployeeControllerTest {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     @MockBean
     private EmployeeService employeeService;
     @Autowired
     private MockMvc mockMvc;
 
-
     @Test
     void addEmployee() throws Exception {
-        Employee employee = new Employee(null, "John Root", "APAC", State.ADDED, 29);
+
+        Employee employee = new Employee(1L, "Test Root", "APAC", State.ADDED, 29);
+        EmployeeDTO employeeDto = new EmployeeDTO(null, "John Root", "APAC", State.ADDED, 29);
+        when(employeeService.addEmployee(any(Employee.class))).thenReturn(employee);
         mockMvc.perform(post("/api/v1/employees").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(employee)))
+                        .content(objectMapper.writeValueAsString(employeeDto)))
                 .andExpect(status().isCreated())
                 .andDo(print());
     }
@@ -66,6 +65,7 @@ public class EmployeeControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
     }
+
     @Test
     void shouldFailUpdateEmployee() throws Exception {
         long id = 1L;
